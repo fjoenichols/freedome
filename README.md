@@ -8,5 +8,5 @@ users of Freedome, but also Mastodon users or anyone else on the fediverse wishi
 to follow a project. 
 
 ## Creators
-Freedome was created by  Dillon Ashida-Schwisow, Katy Brown, Kyle Eyeye, and 
+Freedome was created by  Dillon Ashida-Schwisow, Katy A Brown, Kyle Eyeye, and 
 F. Joe Nichols as part of their Senior Project at NMSU in Summer 2024.
