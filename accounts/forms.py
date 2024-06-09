@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser
 
 class RegisterForm(UserCreationForm):
@@ -29,14 +29,3 @@ class RegisterForm(UserCreationForm):
                     visible.field.widget.attrs['class'] = 'button'
             except AttributeError:
                 visible.field.widget.attrs['class'] = 'textarea'
-
-class AuthenticationForm():
-        def __init__(self, *args, **kwargs):
-            super(AuthenticationForm, self).__init__(*args, **kwargs)
-            for visible in self.visible_fields():
-                if visible.field.widget.input_type == 'text':
-                    visible.field.widget.attrs['class'] = 'input'
-                elif visible.field.widget.input_type == 'email':
-                    visible.field.widget.attrs['class'] = 'input'
-                elif visible.field.widget.input_type == 'password':
-                    visible.field.widget.attrs['class'] = 'input'
