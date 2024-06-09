@@ -12,3 +12,20 @@ class RegisterForm(UserCreationForm):
     class Meta:
         model = CustomUser
         fields = ['username', 'name', 'email', 'password1', 'password2', 'bio', 'github_link', 'avatar']
+
+    def __init__(self, *args, **kwargs):
+        super(RegisterForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            try:
+                if visible.field.widget.input_type == 'text':
+                    visible.field.widget.attrs['class'] = 'input'
+                elif visible.field.widget.input_type == 'email':
+                    visible.field.widget.attrs['class'] = 'input'
+                elif visible.field.widget.input_type == 'password':
+                    visible.field.widget.attrs['class'] = 'input'
+                elif visible.field.widget.input_type == 'url':
+                    visible.field.widget.attrs['class'] = 'input'
+                elif visible.field.widget.input_type == 'file':
+                    visible.field.widget.attrs['class'] = 'button'
+            except AttributeError:
+                visible.field.widget.attrs['class'] = 'textarea'
