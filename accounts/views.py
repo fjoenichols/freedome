@@ -1,6 +1,6 @@
 from django.contrib.auth import login
 from django.shortcuts import render, redirect
-from .forms import RegisterForm
+from .forms import RegisterForm, AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
 
