@@ -1,0 +1,88 @@
+name: Create and publish a Docker image
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Build and push Docker image
+        id: push
+        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+  
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: true
+          
+  deploy:
+    needs: build-and-push-image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Deploy the Application
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          playbook: playbook.yml
+          directory: ./ansible
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          inventory: |
+            [all:children]
+            hello
+
+            [all:vars]
+            ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+            ansible_user=${{ secrets.ANSIBLE_USER }} 
+
+            [hello]
+            hello-0 ansible_host=${{ secrets.ANSIBLE_HOST }} 
+          options: |
+            --extra-vars "db_name=${{ secrets.DB_NAME }} 
+                  db_user=${{ secrets.DB_USER }}
+                  db_password=${{ secrets.DB_PASSWORD }}
+                  db_host=${{ secrets.DB_HOST }}
+                  db_port=${{ secrets.DB_PORT }}
+                  allowed_hosts_url=${{ secrets.ALLOWED_HOSTS_URL }}
+                  secret_key=${{ secrets.SECRET_KEY }}
+                  django_settings_module=${{ secrets.DJANGO_SETTINGS_MODULE }}
+                  repository_url=${{ secrets.DOCKER_REPOSITORY_URL }}
+                  image_name=${{ secrets.DOCKER_IMAGE_NAME }}
+                  image_tag=${{ secrets.DOCKER_IMAGE_TAG }}"
