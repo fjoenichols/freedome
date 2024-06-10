@@ -85,4 +85,5 @@ jobs:
                   django_settings_module=${{ secrets.DJANGO_SETTINGS_MODULE }}
                   repository_url=${{ secrets.DOCKER_REPOSITORY_URL }}
                   image_name=${{ secrets.DOCKER_IMAGE_NAME }}
-                  image_tag=${{ secrets.DOCKER_IMAGE_TAG }}"
+                  image_tag=${{ secrets.DOCKER_IMAGE_TAG }}
+                  trusted_origin_url=${{ secrets.TRUSTED_ORIGIN_URL }}"

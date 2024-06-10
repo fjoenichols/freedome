@@ -28,7 +28,8 @@
           ALLOWED_HOSTS_URL: "{{ allowed_hosts_url }}"
           SECRET_KEY: "{{ secret_key }}"
           DJANGO_SETTINGS_MODULE: "{{ django_settings_module }}"
-          
+          TRUSTED_ORIGIN_URL: "{{ trusted_origin_url }}"
+
     - name: Start Application Container
       community.docker.docker_container:
         name: "{{ image_name }}"
@@ -46,4 +47,5 @@
           ALLOWED_HOSTS_URL: "{{ allowed_hosts_url }}"
           SECRET_KEY: "{{ secret_key }}"
           DJANGO_SETTINGS_MODULE: "{{ django_settings_module }}"
+          TRUSTED_ORIGIN_URL: "{{ trusted_origin_url }}"
 
