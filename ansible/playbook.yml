@@ -19,7 +19,16 @@
         image: "{{ repository_url }}/{{ image_name }}:{{ image_tag }}"
         pull: true
         entrypoint: ["python", "manage.py", "migrate"]
-
+        env:
+          DB_NAME: "{{ db_name }}"
+          DB_USER: "{{ db_user }}"
+          DB_PASSWORD: "{{ db_password }}"
+          DB_HOST: "{{ db_host }}"
+          DB_PORT: "{{ db_port }}"
+          ALLOWED_HOSTS_URL: "{{ allowed_hosts_url }}"
+          SECRET_KEY: "{{ secret_key }}"
+          DJANGO_SETTINGS_MODULE: "{{ django_settings_module }}"
+          
     - name: Start Application Container
       community.docker.docker_container:
         name: "{{ image_name }}"
