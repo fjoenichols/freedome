@@ -1,0 +1,21 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}Freedome | Login{% endblock %}
+
+{% block content %}
+<br><br>
+<div class="fixed-grid has-4-cols">
+    <div class="grid">
+        <div class="cell is-col-span-2 is-col-start-2">
+            <h1 class="title">Login</h1>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <br>
+                <button type="submit" class="button is-dark">Login</button>
+            </form>
+            <p>Don't have an account? <a href="{% url 'register' %}">Register here</a>.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
