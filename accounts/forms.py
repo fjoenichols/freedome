@@ -14,12 +14,10 @@ class RegisterForm(UserCreationForm):
         model = CustomUser
         fields = ['username', 'name', 'email', 'password1', 'password2', 'bio', 'github_link', 'avatar']
 
-<<<<<<< HEAD
 class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
         fields = ['title', 'description']
-=======
     def __init__(self, *args, **kwargs):
         super(RegisterForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
@@ -36,4 +34,3 @@ class ProjectForm(forms.ModelForm):
                     visible.field.widget.attrs['class'] = 'button'
             except AttributeError:
                 visible.field.widget.attrs['class'] = 'textarea'
->>>>>>> be74e11fc89cf4c7584660291912b7f837525a75

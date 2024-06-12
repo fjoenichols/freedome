@@ -22,4 +22,4 @@ class Project(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        retuen self.title
+        return self.title
