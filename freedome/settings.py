@@ -37,7 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts'
+    'accounts',
+    'projects',
+    'crispy_forms',
+    'crispy_bulma',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +133,6 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 # Encorporating Django authentication system
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'index'
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = ("bulma",)
+CRISPY_TEMPLATE_PACK = "bulma"
