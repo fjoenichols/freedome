@@ -1,0 +1,24 @@
+{% extends "accounts/base.html" %}
+
+{% block title %}Projects - Freedome{% endblock %}
+
+{% block content %}
+<br><br>
+<div class="fixed-grid has-4-cols">
+    <div class="grid">
+        <div class="cell is-col-span-2 is-col-start-2">
+    <h1 class="title">My Projects</h1>
+    <a href="{% url 'project_create' %}" class="button is-primary">Create New Project</a>
+    <div class="section">
+        {% for project in projects %}
+            <div class="box">
+                <h2 class="title">{{ project.title }}</h2>
+                <p>{{ project.description }}</p>
+                <p><small>Created on: {{ project.creation_date }}</small></p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+</div>
+</div>
+{% endblock %}
