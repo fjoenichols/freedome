@@ -1,5 +1,5 @@
 {% extends "accounts/base.html" %}
-
+{% load crispy_forms_tags %}
 {% block title %}{{ project.title }}{% endblock %}
 
 {% block content %}
@@ -11,13 +11,41 @@
             <a href="{% url 'index' %}" class="button">Home</a>
             <a href="{% url 'project_list' %}" class="button">View Projects</a>
             <br>
-            <div class="section">
+            
                 <h2 class="title">{{ project.title | title }}</h2>
                 <p><small>Created on: {{ project.creation_date }}</small></p>
                 <br>
                 <p>{{ project.description | capfirst }}</p>
-            </div>
+            
         </div>
+    </div>
+    <div class="grid">
+        <div class="cell is-col-span-2 is-col-start-2">
+            <br><hr>
+                <h2 class="title is-4">Tasks</h2>
+                <hr>
+                <br>
+                {% for task in tasks %}
+                <h3 class="subtitle"><a href="{% url 'task_detail' task.pk %}">{{ task.title | title }}</a></h3>
+                <p><small>Created on: {{ task.creation_date }}</small></p>
+                <p><small>Status: {{ task.status | capfirst }} | Due Date: {{ task.due_date }}</small></p>
+                <hr>
+                {% empty %}
+                <p>No tasks.</p>
+                {% endfor %}
+        </div>
+    </div>
+    <div class="grid">
+        <div class="cell is-col-span-2 is-col-start-2">
+            <br><hr>
+                <h3 class="title is-4">Add a Task</h3>
+                <hr>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    <button type="submit" class="button">Submit</button>
+                </form>
+            </div>
     </div>
 </div>
 </section>

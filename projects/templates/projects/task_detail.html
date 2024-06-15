@@ -1,0 +1,59 @@
+{% extends "accounts/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ task.title }}{% endblock %}
+
+{% block content %}
+<section class="section">
+<br><br>
+<div class="fixed-grid has-4-cols">
+    <div class="grid">
+        <div class="cell is-col-span-2 is-col-start-2">
+            <a href="{% url 'index' %}" class="button">Home</a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'project_list' %}" class="button">View Projects</a>
+            {% else %}
+            <a href="{% url 'project_public' %}" class="button">View Projects</a>
+            {% endif %}
+            <a href="{% url 'project_detail' project.pk %}" class="button">Back to Project</a>
+            <br><br>
+                <h2 class="title">{{ task.title | title }}</h2>
+                <p><small>Created on: {{ task.creation_date }}</small></p>
+                <p><small>Status: {{ task.status | capfirst }} | 
+                    Due Date: {{ task.due_date }}</small></p>
+                <br>
+                <p>{{ task.description | capfirst }}</p>
+        </div>
+    </div>
+    
+    <div class="grid">
+        <div class="cell is-col-span-2 is-col-start-2">
+                <br><hr>
+                <h2 class="title is-4">Subtasks</h2>
+                <hr><br>
+                {% for subtask in subtasks %}
+                <h3 class="subtitle"><a href="{% url 'subtask_detail' subtask.pk %}">{{ subtask.title | title }}</a></h2>
+                <p><small>Created on: {{ subtask.creation_date }}</small></p>
+                <p><small>Status: {{ subtask.status | capfirst }} | 
+                    Due Date: {{ subtask.due_date }}</small></p>
+                <hr>
+                {% empty %}
+                <p>No subtasks.</p>
+                {% endfor %}
+        </div>
+    </div>
+    <div class="grid">
+        <div class="cell is-col-span-2 is-col-start-2">
+            <br><hr>
+                <h2 class="title">Add a Subtask</h2>
+                <hr><br>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    <button type="submit" class="button">Submit</button>
+                </form>
+        </div>
+    </div>
+</div>
+</section>
+{% endblock %}
