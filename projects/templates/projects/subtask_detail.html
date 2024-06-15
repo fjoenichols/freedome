@@ -1,0 +1,29 @@
+{% extends "accounts/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ task.title }}{% endblock %}
+
+{% block content %}
+<section class="section">
+<br><br>
+<div class="fixed-grid has-4-cols">
+    <div class="grid">
+        <div class="cell is-col-span-2 is-col-start-2">
+            <a href="{% url 'index' %}" class="button">Home</a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'project_list' %}" class="button">View Projects</a>
+            {% else %}
+            <a href="{% url 'project_list' %}" class="button">View Projects</a>
+            {% endif %}
+            <br><br>
+                <h2 class="title">{{ subtask.title | title }}</h2>
+                <p><small>Created on: {{ subtask.creation_date }}</small></p>
+                <p><small>Status: {{ subtask.status | capfirst }} | 
+                    Due Date: {{ subtask.due_date }}</small></p>
+                <br>
+                <p>{{ task.description | capfirst }}</p>
+        </div>
+    </div>
+</div>
+</section>
+{% endblock %}

@@ -1,7 +1,7 @@
 {% extends "accounts/base.html" %}
 {% load crispy_forms_tags %}
 
-{% block title %}{{ project.title }}{% endblock %}
+{% block title %}{{ task.title }}{% endblock %}
 
 {% block content %}
 <section class="section">
@@ -15,40 +15,43 @@
             {% else %}
             <a href="{% url 'project_public' %}" class="button">View Projects</a>
             {% endif %}
+            <a href="{% url 'project_detail' project.pk %}" class="button">Back to Project</a>
             <br><br>
-            <h2 class="title">{{ project.title | title }}</h2>
-            <p><small>Created on: {{ project.creation_date }}</small></p>
-            <br>
-            <p>{{ project.description | capfirst }}</p>
+                <h2 class="title">{{ task.title | title }}</h2>
+                <p><small>Created on: {{ task.creation_date }}</small></p>
+                <p><small>Status: {{ task.status | capfirst }} | 
+                    Due Date: {{ task.due_date }}</small></p>
+                <br>
+                <p>{{ task.description | capfirst }}</p>
         </div>
     </div>
     <div class="grid">
         <div class="cell is-col-span-2 is-col-start-2">
-            <br><hr>
-                <h2 class="title is-4">Tasks</h2>
-                <hr>
-                <br>
-                {% for task in tasks %}
-                <h3 class="subtitle"><a href="{% url 'task_detail' task.pk %}">{{ task.title | title }}</a></h3>
-                <p><small>Created on: {{ task.creation_date }}</small></p>
-                <p><small>Status: {{ task.status | capfirst }} | Due Date: {{ task.due_date }}</small></p>
+                <br><hr>
+                <h2 class="title is-4">Subtasks</h2>
+                <hr><br>
+                {% for subtask in subtasks %}
+                <h3 class="subtitle"><a href="{% url 'subtask_detail' subtask.pk %}">{{ subtask.title | title }}</a></h2>
+                <p><small>Created on: {{ subtask.creation_date }}</small></p>
+                <p><small>Status: {{ subtask.status | capfirst }} | 
+                    Due Date: {{ subtask.due_date }}</small></p>
                 <hr>
                 {% empty %}
-                <p>No tasks.</p>
+                <p>No subtasks.</p>
                 {% endfor %}
         </div>
     </div>
     <div class="grid">
         <div class="cell is-col-span-2 is-col-start-2">
             <br><hr>
-                <h3 class="title is-4">Add a Task</h3>
-                <hr>
+                <h2 class="title">Add a Subtask</h2>
+                <hr><br>
                 <form method="post">
                     {% csrf_token %}
                     {{ form | crispy }}
                     <button type="submit" class="button">Submit</button>
                 </form>
-            </div>
+        </div>
     </div>
 </div>
 </section>
