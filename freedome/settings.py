@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'projects',
     'crispy_forms',
     'crispy_bulma',
+    'django_activitypub',
 ]
 
 MIDDLEWARE = [
