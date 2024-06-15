@@ -1,11 +1,20 @@
-from django.contrib.auth import login
-from django.shortcuts import render, redirect
-from .forms import RegisterForm
+from django.contrib.auth import login, get_user_model
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django_activitypub.models import LocalActor
+from .forms import RegisterForm
 
 def index(request):
-    return render(request, 'accounts/index.html')
+    try:
+        actor = LocalActor.objects.get(name=request.user)
+        context = {
+            "actor": actor,
+        }
+        return render(request, "accounts/index.html", context)
+    except:
+        return render(request, "accounts/index.html")
 
 def register(request):
     if request.method == 'POST':
@@ -30,6 +39,13 @@ def login_view(request):
     else:
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
+
+@login_required()    
+def create_local_actor(request):
+    print('creating local actor for ' + request.user.username)
+    user = get_user_model().objects.get(username=request.user)
+    LocalActor.objects.create(user=user, name=user.username, preferred_username=user.username, domain="freedome.us")
+    return redirect('index')
 
 class CustomLoginView(LoginView):
     template_name = 'accounts/login.html'

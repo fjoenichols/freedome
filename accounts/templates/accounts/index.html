@@ -4,9 +4,37 @@
 
 {% block content %}
 <section class="section">
-    <h2 class="title">About Freedom.us</h2>
-    <p class="content">
-        Freedom.us is your go-to project management solution, designed to streamline your workflows, enhance collaboration, and boost productivity.
-    </p>
+<br><br>
+<div class="fixed-grid has-4-cols">
+    <div class="grid">
+        <div class="cell is-col-span-2 is-col-start-2">
+            {% if user.is_authenticated %}
+            <a href="{% url 'index' %}" class="button">Home</a>
+            <a href="{% url 'project_list' %}" class="button">Projects</a>
+            <br><br>
+            <h2 class="title">Member Area</h2>
+            <p class="content">
+                <p>Hello, {{ user.name }}</p>
+                <br>
+                {% if actor.name %}
+                <p>Connected to the fediverse as {{ actor.name }}</p>
+                <br>
+                {% else %}
+                    <form method="post" action="/create_local_actor">
+                        {% csrf_token %}
+                        <button class="button" type="submit">Enable ActivityPub</button>
+                    </form>
+                <br>
+                {% endif %}
+            </p>
+            {% else %}
+            <h2 class="title">About Freedom.us</h2>
+            <p class="content">
+                Freedom.us is your go-to project management solution, designed to streamline your workflows, enhance collaboration, and boost productivity.
+            </p>
+            {% endif %}
+        </div>
+    </div>
+</div>
 </section>
 {% endblock %}

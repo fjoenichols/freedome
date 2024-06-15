@@ -22,11 +22,11 @@
                     {% if user.is_authenticated %}
                         <form method="post" action="{% url 'logout' %}">
                             {% csrf_token %}
-                            <button class="button is-dark" type="submit">Logout</button>
+                            <button class="button" type="submit">Logout</button>
                         </form>
                     {% else %}
-                        <a href="{% url 'login' %}" class="button is-dark">Login</a>
-                        <a href="{% url 'register' %}" class="button is-dark">Register</a>
+                        <a href="{% url 'login' %}" class="button">Login</a>
+                        <a href="{% url 'register' %}" class="button">Register</a>
                     {% endif %}
                 </div>
             </div>

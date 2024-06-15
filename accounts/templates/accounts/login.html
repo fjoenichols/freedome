@@ -1,5 +1,5 @@
 {% extends 'accounts/base.html' %}
-
+{% load crispy_forms_tags %}
 {% block title %}Freedome | Login{% endblock %}
 
 {% block content %}
@@ -10,9 +10,9 @@
             <h1 class="title">Login</h1>
             <form method="post">
                 {% csrf_token %}
-                {{ form.as_p }}
+                {{ form | crispy }}
                 <br>
-                <button type="submit" class="button is-dark">Login</button>
+                <button type="submit" class="button">Login</button>
             </form>
             <p>Don't have an account? <a href="{% url 'register' %}">Register here</a>.</p>
         </div>
