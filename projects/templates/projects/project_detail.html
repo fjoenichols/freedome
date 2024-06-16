@@ -12,6 +12,7 @@
             <a href="{% url 'index' %}" class="button">Home</a>
             {% if user.is_authenticated %}
             <a href="{% url 'project_list' %}" class="button">View Projects</a>
+            <a href="{% url 'project_confirm_delete' project.id %}" class="button is-danger">Delete Project</a>
             {% else %}
             <a href="{% url 'project_public' %}" class="button">View Projects</a>
             {% endif %}
