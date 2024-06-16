@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django_activitypub.models import Note, LocalActor
 from .models import Project, Task, Subtask, ProjectComment, TaskComment, SubtaskComment
 from .forms import ProjectForm, TaskForm, SubtaskForm, ProjectCommentForm, TaskCommentForm, SubtaskCommentForm
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 
@@ -177,3 +177,21 @@ def project_delete(request, pk):
     project = Project.objects.get(pk=pk)
     project.delete()
     return redirect('project_list')
+
+@login_required
+def project_update(request, pk):
+    project = Project.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = ProjectForm(request.POST, instance=project)
+        if form.is_valid():
+            project = form.save(commit=False)
+            project.owner = request.user
+            project.save()
+            return redirect('../' + pk)
+    else: 
+        form = ProjectForm(instance=project)
+    context = {
+        "project": project,
+        "form": form,
+    }
+    return render(request, 'projects/project_update.html', context)
