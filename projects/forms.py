@@ -1,17 +1,7 @@
 from django import forms
 from .models import Project
+from .models import Project, Task, Subtask, ProjectComment, TaskComment, SubtaskComment
 
-from .models import Task, Subtask
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
-
-class ProjectForm(forms.ModelForm):
-    title = forms.CharField(max_length=100, required=True)
-    description = forms.CharField(widget=forms.Textarea, required=False)
-
-    class Meta:
-        model = Project
-        fields = ['title', 'description']
 STATUS_CHOICES = ( 
     ("Backlog", "Backlog"), 
     ("To Do", "To Do"), 
@@ -20,6 +10,17 @@ STATUS_CHOICES = (
     ("Done", "Done"), 
     ("Cancelled", "Cancelled"), 
 ) 
+
+class ProjectForm(forms.ModelForm):
+    title = forms.CharField(max_length=100, required=True)
+    title = forms.CharField(max_length=100, required=True)
+    description = forms.CharField(widget=forms.Textarea, required=False)
+    description = forms.CharField(widget=forms.Textarea, required=False)
+
+
+    class Meta:
+        model = Project
+        fields = ['title', 'description']
 
 class TaskForm(forms.ModelForm):
     title = forms.CharField(max_length=100, required=True)
@@ -46,3 +47,21 @@ class SubtaskForm(forms.ModelForm):
     class Meta:
         model = Subtask
         fields = ['title', 'description', 'status', 'due_date']
+
+class AbstractCommentForm(forms.ModelForm):
+    comment = forms.CharField(widget=forms.Textarea, required=True)
+
+class ProjectCommentForm(AbstractCommentForm):
+    class Meta:
+        model = ProjectComment
+        fields = ['comment']
+
+class TaskCommentForm(AbstractCommentForm):
+    class Meta:
+        model = TaskComment
+        fields = ['comment']
+
+class SubtaskCommentForm(AbstractCommentForm):
+    class Meta:
+        model = SubtaskComment
+        fields = ['comment']

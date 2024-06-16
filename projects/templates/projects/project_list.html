@@ -17,6 +17,8 @@
                 <p>{{ project.description | capfirst }}</p>
                 <p><small>Created on: {{ project.creation_date }}</small></p>
                 <hr>
+            {% empty %}
+            <p>No projects.</p>
             {% endfor %}
         </div>
     </div>

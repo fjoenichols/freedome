@@ -8,5 +8,7 @@ urlpatterns = [
     path('project/<pk>', views.project_detail, name='project_detail'),
     path('task/<pk>', views.task_detail, name='task_detail'),
     path('subtask/<pk>', views.subtask_detail, name='subtask_detail'),
-
+    path('project/<pk>/comment/new', views.project_comment, name='project_comment'),
+    path('task/<pk>/comment/new', views.task_comment, name='task_comment'),
+    path('subtask/<pk>/comment/new', views.subtask_comment, name='subtask_comment'),
 ]

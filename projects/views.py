@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django_activitypub.models import Note, LocalActor
-from .models import Project, Task, Subtask
-from .forms import ProjectForm, TaskForm, SubtaskForm
+from .models import Project, Task, Subtask, ProjectComment, TaskComment, SubtaskComment
+from .forms import ProjectForm, TaskForm, SubtaskForm, ProjectCommentForm, TaskCommentForm, SubtaskCommentForm
 from django.http import HttpResponseRedirect
 
 # Create your views here.
@@ -14,6 +14,7 @@ def project_list(request):
 
 def project_detail(request, pk):
     project = Project.objects.get(pk=pk)
+    project_comments = ProjectComment.objects.filter(parent=project)
     form = TaskForm()
     if request.method == "POST":
         form = TaskForm(request.POST)
@@ -27,10 +28,11 @@ def project_detail(request, pk):
             )
             task.save()
             return HttpResponseRedirect(request.path_info)
-        
+
     tasks = Task.objects.filter(parent=project)
     context = {
         "project":project,
+        "project_comments": project_comments,
         "tasks": tasks,
         "form": TaskForm(),
     }
@@ -67,6 +69,7 @@ def project_public(request):
 
 def task_detail(request, pk):
     task = Task.objects.get(pk=pk)
+    task_comments = TaskComment.objects.filter(parent=task)
     project = Project.objects.get(id=task.parent.id)
     form = SubtaskForm()
     if request.method == "POST":
@@ -81,10 +84,11 @@ def task_detail(request, pk):
             )
             subtask.save()
             return HttpResponseRedirect(request.path_info)
-        
+
     subtasks = Subtask.objects.filter(parent=task)
     context = {
         "task": task,
+        "task_comments": task_comments,
         "project": project,
         "subtasks": subtasks,
         "form": SubtaskForm(),
@@ -93,11 +97,70 @@ def task_detail(request, pk):
 
 def subtask_detail(request, pk):
     subtask = Subtask.objects.get(pk=pk)
+    subtask_comments = SubtaskComment.objects.filter(parent=subtask)
     task= Task.objects.get(id=subtask.parent.id)
     project= Project.objects.get(id=task.parent.id)
     context = {
         "task": task,
+        "subtask_comments": subtask_comments,
         "subtask": subtask,
         "project": project,
     }
     return render(request, 'projects/subtask_detail.html', context)
+
+@login_required
+def project_comment(request, pk):
+    project = Project.objects.get(pk=pk)
+    if request.method == "POST":
+        form = ProjectCommentForm(request.POST)
+        if form.is_valid():
+            project_comment = ProjectComment(
+                comment=form.cleaned_data["comment"],
+                parent=project,
+            )
+            project_comment.author = request.user
+            project_comment.save()
+            return HttpResponseRedirect('../../../project/' + pk)
+    context = { 
+        "project": project,
+        "form": ProjectCommentForm(),
+    }
+    return render(request, 'projects/project_comment.html', context)
+
+@login_required
+def task_comment(request, pk):
+    task = Task.objects.get(pk=pk)
+    if request.method == "POST":
+        form = TaskCommentForm(request.POST)
+        if form.is_valid():
+            task_comment = TaskComment(
+                comment=form.cleaned_data["comment"],
+                parent=task,
+            )
+            task_comment.author = request.user
+            task_comment.save()
+            return HttpResponseRedirect('../../../task/' + pk)
+    context = { 
+        "task": task,
+        "form": TaskCommentForm(),
+    }
+    return render(request, 'projects/task_comment.html', context)
+
+@login_required
+def subtask_comment(request, pk):
+    subtask = Subtask.objects.get(pk=pk)
+    if request.method == "POST":
+        form = SubtaskCommentForm(request.POST)
+        if form.is_valid():
+            subtask_comment = SubtaskComment(
+                comment=form.cleaned_data["comment"],
+                parent=subtask,
+            )
+            subtask_comment.author = request.user
+            subtask_comment.save()
+            return HttpResponseRedirect('../../../subtask/' + pk)
+    context = { 
+        "subtask": subtask,
+        "form": TaskCommentForm(),
+    }
+    return render(request, 'projects/subtask_comment.html', context)
