@@ -25,7 +25,22 @@
                 <p>{{ task.description | capfirst }}</p>
         </div>
     </div>
-    
+    <div class="grid">
+        <div class="cell is-col-span-2 is-col-start-2">
+            <a href="{% url 'task_comment' task.pk %}" class="button">Add a Comment</a>
+            <br><hr>
+                <h2 class="title is-4">Comments</h2>
+                <hr>
+                <br>
+                {% for comment in task_comments %}
+                <p><small>{{ comment.author }} | Created on: {{ comment.creation_date }}</small></p>
+                <p>{{ comment.comment | capfirst }}</p>
+                <hr>
+                {% empty %}
+                <p>No comments.</p>
+                {% endfor %}
+        </div>
+    </div>
     <div class="grid">
         <div class="cell is-col-span-2 is-col-start-2">
                 <br><hr>
