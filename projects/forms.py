@@ -1,5 +1,5 @@
 from django import forms
-from .models import Project
+from .models import Project, Task, Subtask, ProjectComment, TaskComment, SubtaskComment
 
 STATUS_CHOICES = ( 
     ("Backlog", "Backlog"), 
@@ -28,7 +28,7 @@ class TaskForm(forms.ModelForm):
     )
 
     class Meta:
-        model = Project
+        model = Task
         fields = ['title', 'description', 'status', 'due_date']
 
 class SubtaskForm(forms.ModelForm):
@@ -41,5 +41,23 @@ class SubtaskForm(forms.ModelForm):
     )
 
     class Meta:
-        model = Project
+        model = Subtask
         fields = ['title', 'description', 'status', 'due_date']
+
+class AbstractCommentForm(forms.ModelForm):
+    comment = forms.CharField(widget=forms.Textarea, required=True)
+
+class ProjectCommentForm(AbstractCommentForm):
+    class Meta:
+        model = ProjectComment
+        fields = ['comment']
+
+class TaskCommentForm(AbstractCommentForm):
+    class Meta:
+        model = TaskComment
+        fields = ['comment']
+
+class SubtaskCommentForm(AbstractCommentForm):
+    class Meta:
+        model = SubtaskComment
+        fields = ['comment']
