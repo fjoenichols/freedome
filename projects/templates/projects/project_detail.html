@@ -18,7 +18,7 @@
             <br><br>
             <h2 class="title">{{ project.title | title }}</h2>
             <p><small>Created on: {{ project.creation_date }}</small></p>
-            {% if user.is_authenticated %}
+            {% if user == project.owner %}
             <br>
             <a href="{% url 'project_update' project.id %}" class="button is-small">Update Project</a>
             <a href="{% url 'project_confirm_delete' project.id %}" class="button is-danger is-small">Delete Project</a>
