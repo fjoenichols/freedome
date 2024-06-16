@@ -9,6 +9,7 @@
     <div class="grid">
         <div class="cell is-col-span-2 is-col-start-2">
             <a href="{% url 'project_detail' project.id %}" class="button">Back to Project</a>
+            {% if user == project.owner %}
             <br><br>
             <h1 class="title">Update Project: {{ project.title | title }}</h1>
             <form method="post">
@@ -16,6 +17,9 @@
                 {{ form | crispy }}
                 <button type="submit" class="button">Update</button>
             </form>
+            {% else %}
+            <p>You can not edit projects you do not own.</p>
+            {% endif %}
         </div>
     </div>
 </div>
