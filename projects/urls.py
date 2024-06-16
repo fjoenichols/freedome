@@ -11,4 +11,7 @@ urlpatterns = [
     path('project/<pk>/comment/new', views.project_comment, name='project_comment'),
     path('task/<pk>/comment/new', views.task_comment, name='task_comment'),
     path('subtask/<pk>/comment/new', views.subtask_comment, name='subtask_comment'),
+    path('project/<pk>/confirm', views.project_confirm_delete, name='project_confirm_delete'),
+    path('project/<pk>/delete', views.project_delete, name='project_delete'),
+    path('project/<pk>/update', views.project_update, name='project_update'),
 ]

@@ -163,3 +163,35 @@ def subtask_comment(request, pk):
         "form": TaskCommentForm(),
     }
     return render(request, 'projects/subtask_comment.html', context)
+
+@login_required
+def project_confirm_delete(request, pk):
+    project = Project.objects.get(pk=pk)
+    context = {
+        "project": project,
+    }
+    return render(request, 'projects/project_confirm_delete.html', context)
+
+@login_required
+def project_delete(request, pk):
+    project = Project.objects.get(pk=pk)
+    project.delete()
+    return redirect('project_list')
+
+@login_required
+def project_update(request, pk):
+    project = Project.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = ProjectForm(request.POST, instance=project)
+        if form.is_valid():
+            project = form.save(commit=False)
+            project.owner = request.user
+            project.save()
+            return redirect('../' + pk)
+    else: 
+        form = ProjectForm(instance=project)
+    context = {
+        "project": project,
+        "form": form,
+    }
+    return render(request, 'projects/project_update.html', context)
