@@ -1,0 +1,20 @@
+{% extends "accounts/base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}Delete Subtask{% endblock %}
+
+{% block content %}
+<section class="section">
+<br><br>
+<div class="fixed-grid has-4-cols">
+    <div class="grid">
+        <div class="cell is-col-span-2 is-col-start-2">
+            <a href="{% url 'subtask_detail' subtask.pk %}" class="button">Back to Subtask</a>
+            <br><br>
+            <h1 class="title">Delete Subtask: {{ subtask.title | title}}?</h1>
+            <p>Are you sure you want to delete the Subtask,  {{ subtask.title | title}}?</p>
+            <br><br><a href="{% url 'subtask_delete' subtask.id %}" class="button is-danger">Delete Subtask</a>
+        </div>
+    </div>
+</div>
+</section>
+{% endblock %}

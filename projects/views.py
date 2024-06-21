@@ -195,3 +195,71 @@ def project_update(request, pk):
         "form": form,
     }
     return render(request, 'projects/project_update.html', context)
+
+# Task Delete
+@login_required
+def task_confirm_delete(request, pk):
+    task = Task.objects.get(pk=pk)
+    context = {
+        "task": task,
+    }
+    return render(request, 'projects/task_confirm_delete.html', context)
+
+@login_required
+def task_delete(request, pk):
+    task = Task.objects.get(pk=pk)
+    task.delete()
+    return redirect('project_detail')
+
+# Subtask Delete
+@login_required
+def subtask_confirm_delete(request, pk):
+    subtask = Subtask.objects.get(pk=pk)
+    context = {
+        "subtask": subtask,
+    }
+    return render(request, 'projects/subtask_confirm_delete.html', context)
+
+@login_required
+def subtask_delete(request, pk):
+    subtask = Subtask.objects.get(pk=pk)
+    subtask.delete()
+    return redirect('subtask_detail')
+
+# Task Update
+@login_required
+def task_update(request, pk):
+    task = Task.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            task = form.save(commit=False)
+            Project.owner = request.user
+            task.save()
+            return redirect('../' + pk)
+    else: 
+        form = TaskForm(instance=task)
+    context = {
+        "task": task,
+        "form": form,
+    }
+    return render(request, 'projects/task_update.html', context)
+
+# Subtask Update
+@login_required
+def subtask_update(request, pk):
+    subtask = Subtask.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = SubtaskForm(request.POST, instance=subtask)
+        if form.is_valid():
+            subtask = form.save(commit=False)
+            Project.owner = request.user
+            subtask.save()
+            return redirect('../' + pk)
+    else: 
+        form = SubtaskForm(instance=subtask)
+    context = {
+        "subtask": subtask,
+        "form": form,
+    }
+    return render(request, 'projects/subtask_update.html', context)

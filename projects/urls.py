@@ -14,4 +14,11 @@ urlpatterns = [
     path('project/<pk>/confirm', views.project_confirm_delete, name='project_confirm_delete'),
     path('project/<pk>/delete', views.project_delete, name='project_delete'),
     path('project/<pk>/update', views.project_update, name='project_update'),
+    path('task/<pk>/confirm', views.task_confirm_delete, name='task_confirm_delete'),
+    path('task/<pk>/delete', views.task_delete, name='task_delete'),
+    path('task/<pk>/update', views.task_update, name='task_update'),
+    path('subtask/<pk>/confirm', views.subtask_confirm_delete, name='subtask_confirm_delete'),
+    path('subtask/<pk>/delete', views.subtask_delete, name='subtask_delete'),
+    path('subtask/<pk>/update', views.subtask_update, name='subtask_update'),
+
 ]
