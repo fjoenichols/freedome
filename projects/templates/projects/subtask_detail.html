@@ -22,7 +22,15 @@
                 <p><small>Status: {{ subtask.status | capfirst }} | 
                     Due Date: {{ subtask.due_date }}</small></p>
                 <br>
-                <p>{{ task.description | capfirst }}</p>
+                <p>{{ subtask.description | capfirst }}</p>
+
+                {% if project and user == project.owner %}
+                <br>
+                <a href="{% url 'subtask_update' subtask.id %}" class="button is-small">Update Task</a>
+                <a href="{% url 'subtask_confirm_delete' subtask.id %}" class="button is-danger is-small">Delete Subtask</a>
+                <br>
+                {% endif %}
+
         </div>
     </div>
     <div class="grid">
