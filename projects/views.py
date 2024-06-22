@@ -208,8 +208,9 @@ def task_confirm_delete(request, pk):
 @login_required
 def task_delete(request, pk):
     task = Task.objects.get(pk=pk)
+    project = task.parent
     task.delete()
-    return redirect('project_detail')
+    return redirect('project_detail', project.pk)
 
 # Subtask Delete
 @login_required
@@ -223,8 +224,9 @@ def subtask_confirm_delete(request, pk):
 @login_required
 def subtask_delete(request, pk):
     subtask = Subtask.objects.get(pk=pk)
+    task = subtask.parent
     subtask.delete()
-    return redirect('subtask_detail')
+    return redirect('task_detail', task.pk)
 
 # Task Update
 @login_required
@@ -240,6 +242,7 @@ def task_update(request, pk):
     else: 
         form = TaskForm(instance=task)
     context = {
+        "project": task.parent,
         "task": task,
         "form": form,
     }
@@ -249,6 +252,8 @@ def task_update(request, pk):
 @login_required
 def subtask_update(request, pk):
     subtask = Subtask.objects.get(pk=pk)
+    task = subtask.parent # Retrieve the parent tsk.
+
     if request.method == 'POST':
         form = SubtaskForm(request.POST, instance=subtask)
         if form.is_valid():
@@ -259,6 +264,8 @@ def subtask_update(request, pk):
     else: 
         form = SubtaskForm(instance=subtask)
     context = {
+       "project": task.parent,
+       "task": subtask.parent,
         "subtask": subtask,
         "form": form,
     }
