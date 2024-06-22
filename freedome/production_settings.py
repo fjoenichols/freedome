@@ -141,7 +141,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Custom user model -Katy
 AUTH_USER_MODEL = 'accounts.CustomUser'
 # Encorporating Django authentication system
-LOGIN_REDIRECT_URL = 'index'
+LOGIN_REDIRECT_URL = 'profile'
 LOGOUT_REDIRECT_URL = 'index'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = ("bulma",)
