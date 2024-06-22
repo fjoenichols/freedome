@@ -50,9 +50,8 @@
         image: "{{ repository_url }}/{{ image_name }}:{{ image_tag }}"
         ports:
         - "8000:8000"
-        mounts:
-          - target: /app/uploads
-            source: /opt/freedome/uploads
+        volumes:
+          - /opt/freedome/uploads:/app/uploads
         env:
           DB_NAME: "{{ db_name }}"
           DB_USER: "{{ db_user }}"
