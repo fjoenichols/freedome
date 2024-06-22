@@ -48,8 +48,11 @@
                 <span class="subtitle is-6 has-text-weight-semibold">Github:</span> 
                 <span class="is-size-6">{% if user.github_link %}<a href="{{ user.github_link }}" target="_blank">{{ user.github_link }}</a>{% else %}Not Provided{% endif %}</span>
             </p>
+            <br>
             <p>
-                <span class="subtitle is-6 has-text-weight-semibold">Biography:</span>
+                <span class="subtitle is-6 has-text-weight-semibold">Biography</span>
+            </p>
+            <p>
                 <span class="is-size-6">{% if user.bio %}{{ user.bio }}{% else %}No biography provided.{% endif %}</span>
             </p>
             <br>
