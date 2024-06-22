@@ -13,7 +13,7 @@
         path: /opt/freedome/uploads
         state: directory
         mode: 0755
-        
+
     - name: "Allow all access to tcp port {{ item }}"
       community.general.ufw:
         rule: allow
@@ -51,8 +51,8 @@
         ports:
         - "8000:8000"
         mounts:
-          target: uploads
-          source: /opt/freedome/uploads
+          - target: uploads
+            source: /opt/freedome/uploads
         env:
           DB_NAME: "{{ db_name }}"
           DB_USER: "{{ db_user }}"
