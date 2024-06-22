@@ -146,3 +146,6 @@ LOGOUT_REDIRECT_URL = 'index'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = ("bulma",)
 CRISPY_TEMPLATE_PACK = "bulma"
+
+MEDIA_URL = "/uploads/"
+MEDIA_ROOT = BASE_DIR / "uploads"

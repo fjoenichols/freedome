@@ -2,6 +2,18 @@
   hosts: all
   become: true
   tasks:
+    - name: "Make /opt/freedome/uploads"
+      ansible.builtin.file:
+        path: /opt/freedome
+        state: directory
+        mode: 0755
+
+    - name: "Make /opt/freedome/uploads"
+      ansible.builtin.file:
+        path: /opt/freedome/uploads
+        state: directory
+        mode: 0755
+        
     - name: "Allow all access to tcp port {{ item }}"
       community.general.ufw:
         rule: allow
@@ -38,6 +50,9 @@
         image: "{{ repository_url }}/{{ image_name }}:{{ image_tag }}"
         ports:
         - "8000:8000"
+        mounts:
+          target: uploads
+          source: /opt/freedome/uploads
         env:
           DB_NAME: "{{ db_name }}"
           DB_USER: "{{ db_user }}"

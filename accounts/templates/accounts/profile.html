@@ -1,0 +1,75 @@
+{% extends "accounts/base.html" %}
+
+{% block title %}Projects - Freedome{% endblock %}
+
+{% block content %}
+<section class="section">
+<br><br>
+<div class="fixed-grid has-4-cols">
+    <div class="grid">
+        <div class="cell has-text-left">
+            <div class="container has-text-centered">
+                {% if user.avatar %}
+                <figure class="image is-128x128 is-inline-block">
+                    <img src="../uploads/{{ user.avatar }}" class="image is-128x128 is-rounded"/>
+                </figure>
+                {% else %}
+                <figure class="image is-128x128 is-inline-block">
+                    <img src="../uploads/avatars/system/default.png" class="image is-128x128 is-rounded"/>
+                </figure>
+                {% endif %}
+                <br>
+                <p class="title is-5 center">{{ user.name | title }}</p>
+            </div>
+            <hr>
+            <p>
+                <span class="is-6">Member since {{ user.join_date | date }}</span> 
+            </p>
+            <p>
+            {% if actor.name %}
+            Connected to the fediverse as {{ actor.name }}
+            {% else %}
+                <form method="post" action="/create_local_actor">
+                    {% csrf_token %}
+                    <button class="button is-small" type="submit">Enable ActivityPub</button>
+                </form>
+            {% endif %}
+            </p>
+            <br>
+            <p>
+                <span class="subtitle is-6 has-text-weight-semibold">Name:</span> 
+                <span class="is-size-6">{% if user.name %}{{ user.name }}{% else %}Not Provided{% endif %}</span>
+            </p>
+            <p>
+                <span class="subtitle is-6 has-text-weight-semibold">Email:</span> 
+                <span class="is-size-6">{% if user.email %}{{ user.email }}{% else %}Not Provided{% endif %}</span>
+            </p>
+            <p>
+                <span class="subtitle is-6 has-text-weight-semibold">Github:</span> 
+                <span class="is-size-6">{% if user.github_link %}<a href="{{ user.github_link }}" target="_blank">{{ user.github_link }}</a>{% else %}Not Provided{% endif %}</span>
+            </p>
+            <p>
+                <span class="subtitle is-6 has-text-weight-semibold">Biography:</span>
+                <span class="is-size-6">{% if user.bio %}{{ user.bio }}{% else %}No biography provided.{% endif %}</span>
+            </p>
+            <br>
+            <p>
+                <a href="{% url 'profile_update' %}" class="button is-small">Update Profile</a>
+            </p>
+        </div>
+        <div class="cell is-col-span-2 is-col-start-2">
+            <h1 class="title is-3">My Projects</h1>
+            <a href="{% url 'index' %}" class="button is-small">Home</a>
+            <a href="{% url 'project_create' %}" class="button is-small">Create New Project</a>
+            <br><br><br><br><hr>
+            {% for project in projects %}
+                <h2 class="title is-4"><a href="{% url 'project_detail' project.pk %}">{{ project.title | title }}</a></h2>
+                <p><span class="has-text-weight-semibold">Description:</span> {{ project.description | capfirst }}</p>
+                <p><small>Created on: {{ project.creation_date | date }}</small></p>
+                <hr>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+</section>
+{% endblock %}
