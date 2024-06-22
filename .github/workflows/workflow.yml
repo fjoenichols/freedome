@@ -49,7 +49,31 @@ jobs:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
+      
+      - name: Build Success
+        uses: rjstone/discord-webhook-notify@v1
+        if: success()
+        with:
+          severity: info
+          details: Docker Image Build Succeeded!
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+              
+      - name: Build Failure
+        uses: rjstone/discord-webhook-notify@v1
+        if: failure()
+        with:
+          severity: error
+          details: Build Failed!
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
           
+      - name: Build Cancelled
+        uses: rjstone/discord-webhook-notify@v1
+        if: cancelled()
+        with:
+          severity: warn
+          details: Build Cancelled!
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        
   deploy:
     needs: build-and-push-image
     runs-on: ubuntu-latest
@@ -87,3 +111,27 @@ jobs:
                   image_name=${{ secrets.DOCKER_IMAGE_NAME }}
                   image_tag=${{ secrets.DOCKER_IMAGE_TAG }}
                   trusted_origin_url=${{ secrets.TRUSTED_ORIGIN_URL }}"
+
+      - name: Deploy Success
+        uses: rjstone/discord-webhook-notify@v1
+        if: success()
+        with:
+          severity: info
+          details: Deploy to Freedome.us Succeeded!
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+              
+      - name: Deploy Failure
+        uses: rjstone/discord-webhook-notify@v1
+        if: failure()
+        with:
+          severity: error
+          details: Deploy Failed!
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          
+      - name: Deploy Cancelled
+        uses: rjstone/discord-webhook-notify@v1
+        if: cancelled()
+        with:
+          severity: warn
+          details: Deploy Cancelled!
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
