@@ -51,7 +51,7 @@
         ports:
         - "8000:8000"
         mounts:
-          - target: uploads
+          - target: /app/uploads
             source: /opt/freedome/uploads
         env:
           DB_NAME: "{{ db_name }}"
