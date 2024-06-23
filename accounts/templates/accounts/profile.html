@@ -27,7 +27,7 @@
             </p>
             <p>
             {% if actor.name %}
-            Connected to the fediverse as {{ actor.name }}
+            Connected to the <a href="../pub/{{ actor.name }}" target="_blank">fediverse as {{ actor.name }}</a>.
             {% else %}
                 <form method="post" action="/create_local_actor">
                     {% csrf_token %}
